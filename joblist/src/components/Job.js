@@ -14,7 +14,9 @@ const Job = ({ job }) => {
           <div>
             <Card.Title>
               {job.title} -{' '}
-              <span className='text-muted font-weith-light'>{job.company}</span>
+              <span className='text-muted font-weight-light'>
+                {job.company}
+              </span>
             </Card.Title>
             <Card.Subtitle className='text-muted mb-2'>
               {new Date(job.created_at).toLocaleDateString()}
@@ -22,15 +24,13 @@ const Job = ({ job }) => {
             <Badge variant='secondary' className='mr-2'>
               {job.type}
             </Badge>
-            <Badge variant='secondary' className='mr-2'>
-              {job.location}
-            </Badge>
+            <Badge variant='secondary'>{job.location}</Badge>
             <div style={{ wordBreak: 'break-all ' }}>
               <ReactMarkdown source={job.how_to_apply} />
             </div>
           </div>
           <img
-            className='d-none.d-md-block'
+            className='d-none d-md-block'
             height='50'
             alt={job.company}
             src={job.company_logo}

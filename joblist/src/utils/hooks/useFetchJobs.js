@@ -40,15 +40,16 @@ const useFetchJobs = (params, page) => {
     dispatch({ type: ACTIONS.LOADING });
     axios
       .get(BASE_URL, {
-        cancelToken: cancelToken1.token,
-        params: { ...params, markdown: true, page: page }
+        params: { markdown: true, page: page },
+        cancelToken: cancelToken1.token
       })
-      .then(res =>
-        dispatch({ type: ACTIONS.GET_DATA, payload: { jobs: res.data } })
-      )
-      .catch(e => {
-        if (axios.isCancel(e)) return;
-        dispatch({ type: ACTIONS.ERROR, payload: { error: e } });
+      .then(res => {
+        console.log('res', res);
+        dispatch({ type: ACTIONS.GET_DATA, payload: { jobs: res.data } });
+      })
+      .catch(error => {
+        if (axios.isCancel(error)) return;
+        dispatch({ type: ACTIONS.ERROR, payload: { error: error } });
       });
 
     const cancelToken2 = axios.CancelToken.source();
