@@ -1,7 +1,12 @@
 import React from 'react';
 import { Form, Col } from 'react-bootstrap';
 
-const SearchForm = ({ params, onParamChange }) => {
+const SearchForm = ({
+  params,
+  onParamChange,
+  searchText,
+  onSearchTextChange
+}) => {
   return (
     <Form className='mt-4'>
       <Form.Row className='align-items-end'>
@@ -11,8 +16,9 @@ const SearchForm = ({ params, onParamChange }) => {
             type='text'
             name='description'
             placeholder='Enter description'
-            onChange={onParamChange}
-            value={params.description}
+            onChange={onSearchTextChange}
+            onKeyPress={onParamChange}
+            value={searchText.description}
           />
         </Form.Group>
         <Form.Group controlId='formLocation' as={Col}>
@@ -21,8 +27,9 @@ const SearchForm = ({ params, onParamChange }) => {
             type='text'
             name='location'
             placeholder='Enter Location'
-            onChange={onParamChange}
-            value={params.location}
+            onChange={onSearchTextChange}
+            onKeyPress={onParamChange}
+            value={searchText.location}
           />
         </Form.Group>
         <Form.Group
