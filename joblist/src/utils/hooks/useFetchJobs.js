@@ -38,14 +38,13 @@ const useFetchJobs = (params, page) => {
   useEffect(() => {
     const cancelToken1 = axios.CancelToken.source();
     dispatch({ type: ACTIONS.LOADING });
-    console.log('hook params', params);
+
     axios
       .get(BASE_URL, {
         params: { ...params, markdown: true, page: page },
         cancelToken: cancelToken1.token
       })
       .then(res => {
-        console.log('res', res);
         dispatch({ type: ACTIONS.GET_DATA, payload: { jobs: res.data } });
       })
       .catch(error => {
@@ -53,27 +52,26 @@ const useFetchJobs = (params, page) => {
         dispatch({ type: ACTIONS.ERROR, payload: { error: error } });
       });
 
-    // const cancelToken2 = axios.CancelToken.source();
-    // dispatch({ type: ACTIONS.LOADING });
-    // axios
-    //   .get(BASE_URL, {
-    //     cancelToken: cancelToken2.token,
-    //     params: { ...params, markdown: true, page: page + 1 }
-    //   })
-    //   .then(res =>
-    //     dispatch({
-    //       type: ACTIONS.GET_DATA,
-    //       payload: { hasNextPage: res.data.length !== 0 }
-    //     })
-    //   )
-    //   .catch(e => {
-    //     if (axios.isCancel(e)) return;
-    //     dispatch({ type: ACTIONS.ERROR, payload: { error: e } });
-    //   });
+    const cancelToken2 = axios.CancelToken.source();
+    axios
+      .get(BASE_URL, {
+        cancelToken: cancelToken2.token,
+        params: { ...params, markdown: true, page: page + 1 }
+      })
+      .then(res =>
+        dispatch({
+          type: ACTIONS.UPDATE_NEXT_PAGE,
+          payload: { hasNextPage: res.data.length !== 0 }
+        })
+      )
+      .catch(e => {
+        if (axios.isCancel(e)) return;
+        dispatch({ type: ACTIONS.ERROR, payload: { error: e } });
+      });
 
     return () => {
       cancelToken1.cancel();
-      // cancelToken2.cancel();
+      cancelToken2.cancel();
     };
   }, [params, page]);
 

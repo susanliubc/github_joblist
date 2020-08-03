@@ -1,2 +1,3 @@
 # github_joblist
-Using react hooks to build github job list UI
+
+Using react hooks, react-bootstrap to build github job list UI

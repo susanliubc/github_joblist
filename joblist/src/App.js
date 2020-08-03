@@ -5,6 +5,7 @@ import SearchForm from './components/SearchForm';
 import useFetchJobs from './utils/hooks/useFetchJobs';
 import { debounce } from 'throttle-debounce';
 import Job from './components/Job';
+import JobPagination from './components/JobPagination';
 
 function App() {
   const [params, setParams] = useState({
@@ -19,9 +20,6 @@ function App() {
   const [page, setPage] = useState(1);
   const { jobs, loading, error, hasNextPage } = useFetchJobs(params, page);
 
-  console.log('jobs', jobs);
-  console.log('params', params);
-
   const handleParamChange = event => {
     event.persist();
 
@@ -29,10 +27,8 @@ function App() {
 
     if (event.charCode === 13 && event.target.name !== 'full_time') {
       if (event.target.name === 'description') {
-        console.log('description');
         delayedQueryDescription(event.target.value);
       } else if (event.target.name === 'location') {
-        console.log('location');
         delayedQueryLocation(event.target.value);
       }
     } else if (event.target.name === 'full_time') {
@@ -44,6 +40,8 @@ function App() {
   };
 
   const handleSearchTextChange = event => {
+    event.persist();
+
     setPage(1);
 
     setSearchText(text => ({
@@ -83,7 +81,21 @@ function App() {
       {error && (
         <h2 className='text-danger'>Error occurs. Please refresh the page</h2>
       )}
+      {page >= 1 && (
+        <JobPagination
+          page={page}
+          setPage={setPage}
+          hasNextPage={hasNextPage}
+        />
+      )}
       {jobs && jobs.map(job => <Job key={job.id} job={job} />)}
+      {page >= 1 && (
+        <JobPagination
+          page={page}
+          setPage={setPage}
+          hasNextPage={hasNextPage}
+        />
+      )}
     </Container>
   );
 }

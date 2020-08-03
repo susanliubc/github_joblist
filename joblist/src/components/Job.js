@@ -5,7 +5,7 @@ import ReactMarkdown from 'react-markdown';
 const Job = ({ job }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleClick = () => setIsOpen(prevIsOpen => !prevIsOpen);
+  const handleClick = () => setIsOpen(isOpen => !isOpen);
 
   return (
     <Card className='mt-3'>
